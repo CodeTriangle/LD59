@@ -15,9 +15,32 @@ run/main_scene="uid://dqnprgoxue3d7"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+DebugMenu="*uid://cggqb75a8w8r"
+
+[display]
+
+window/stretch/scale_mode="integer"
+
 [dotnet]
 
 project/assembly_name="LD59"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/debug_menu/plugin.cfg")
+
+[file_customization]
+
+folder_colors={
+"res://fonts/": "gray",
+"res://materials/": "orange",
+"res://scenes/": "green",
+"res://scripting/": "purple",
+"res://shaders/": "pink",
+"res://subscenes/": "blue"
+}
 
 [physics]
 
