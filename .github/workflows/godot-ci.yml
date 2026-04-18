@@ -8,8 +8,8 @@ on:
 
 env:
   GODOT_VERSION: 4.6.2
-  EXPORT_NAME: test-project
-  PROJECT_PATH: test-project
+  EXPORT_NAME: LD59
+  PROJECT_PATH: .
 
 jobs:
   export-windows:
