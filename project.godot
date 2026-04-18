@@ -22,6 +22,7 @@ DebugMenu="*uid://cggqb75a8w8r"
 [display]
 
 window/stretch/scale_mode="integer"
+window/vsync/vsync_mode=0
 
 [dotnet]
 
