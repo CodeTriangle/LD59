@@ -1,7 +1,7 @@
-extends Node3D
+extends CanvasItem
 
-@export var Target: Node3D
+@export var Target: Camera3D
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	transform = Target.transform
+func _ready():
+	var dithershader : ShaderMaterial = material
+	dithershader.set_shader_parameter("SCREEN_TEXTURE", get_viewport().get_texture())

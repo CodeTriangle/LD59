@@ -4,6 +4,8 @@
 [ext_resource type="Script" uid="uid://cnlnucyuwtdfc" path="res://scripting/copy_transform.gd" id="2_n77mx"]
 [ext_resource type="Texture2D" uid="uid://dxluetgnmx57p" path="res://icon.svg" id="2_nb1wl"]
 [ext_resource type="Script" uid="uid://c0ll2xp2airrq" path="res://camera.gd" id="2_rlkm5"]
+[ext_resource type="PackedScene" uid="uid://dpjhpfkk3hukq" path="res://addons/DragAndDrop3D/nodes/DragAndDrop3D.tscn" id="5_fws1a"]
+[ext_resource type="PackedScene" uid="uid://c3i6b7ijjxudc" path="res://addons/DragAndDrop3D/nodes/DraggingObject3D.tscn" id="6_xpysu"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_pn5b2"]
 
@@ -13,54 +15,50 @@ sky_material = SubResource("ProceduralSkyMaterial_pn5b2")
 [sub_resource type="Environment" id="Environment_cguwc"]
 background_energy_multiplier = 0.0
 sky = SubResource("Sky_mncer")
+tonemap_mode = 3
 tonemap_agx_white = 16.5
 ssao_enabled = true
-glow_enabled = true
 glow_intensity = 1.29
 glow_bloom = 1.0
 fog_density = 0.001
 fog_sky_affect = 0.165
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_go42g"]
-lightmap_size_hint = Vector2i(3002, 3002)
-add_uv2 = true
-size = Vector2(600, 600)
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_2gju5"]
-viewport_path = NodePath("SubViewport")
+[sub_resource type="ViewportTexture" id="ViewportTexture_m5dm6"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rlkm5"]
 resource_local_to_scene = true
 shader = ExtResource("1_2gju5")
 shader_parameter/bits = 1
 shader_parameter/dithering = true
-shader_parameter/SCREEN_TEXTURE = SubResource("ViewportTexture_2gju5")
+shader_parameter/SCREEN_TEXTURE = SubResource("ViewportTexture_m5dm6")
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_vbrkm"]
 viewport_path = NodePath("SubViewport")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_go42g"]
+lightmap_size_hint = Vector2i(3002, 3002)
+add_uv2 = true
+size = Vector2(600, 600)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nb1wl"]
+size = Vector3(600, 0.05, 600)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_fws1a"]
+radius = 0.356
 
 [node name="Node3D" type="Node3D" unique_id=1591878142]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=705581944]
 environment = SubResource("Environment_cguwc")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="WorldEnvironment" unique_id=2052072014]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.24999416, -0.4533862, -2.4260414)
-mesh = SubResource("PlaneMesh_go42g")
-
 [node name="Control" type="Control" parent="." unique_id=846550873]
 layout_mode = 3
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -320.0
-offset_top = -240.0
-offset_right = 320.0
-offset_bottom = 240.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="TextureRect" type="TextureRect" parent="Control" unique_id=538936456]
 material = SubResource("ShaderMaterial_rlkm5")
@@ -70,7 +68,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 texture = SubResource("ViewportTexture_vbrkm")
+script = ExtResource("2_n77mx")
 
 [node name="Control" type="Control" parent="Control" unique_id=1924246674]
 z_index = 1
@@ -80,59 +80,61 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="TextureRect" type="TextureRect" parent="Control/Control" unique_id=1313580855]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -64.0
-offset_top = -64.0
-offset_right = 64.0
-offset_bottom = 64.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 0
+offset_right = 32.0
+offset_bottom = 32.0
+mouse_filter = 2
 texture = ExtResource("2_nb1wl")
-
-[node name="SubViewport" type="SubViewport" parent="." unique_id=2027227450]
-size = Vector2i(640, 480)
-
-[node name="ViewportCamera" type="Camera3D" parent="SubViewport" unique_id=337996459 node_paths=PackedStringArray("Target")]
-script = ExtResource("2_n77mx")
-Target = NodePath("../../GameplayCameraTarget")
+expand_mode = 1
 
 [node name="GameplayCameraTarget" type="Node3D" parent="." unique_id=227431029]
 script = ExtResource("2_rlkm5")
 metadata/_custom_type_script = "uid://c0ll2xp2airrq"
 
-[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=646619755]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9055967, 0, -0.18576872)
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1092976673]
+
+[node name="BGPlane" type="MeshInstance3D" parent="StaticBody3D" unique_id=2052072014]
+mesh = SubResource("PlaneMesh_go42g")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=863579293]
+shape = SubResource("BoxShape3D_nb1wl")
+
+[node name="DragAndDrop3d" parent="." unique_id=1460727689 instance=ExtResource("5_fws1a")]
+useSnap = true
+snapOverlap = true
+
+[node name="Red" parent="." unique_id=1273258037 instance=ExtResource("6_xpysu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Red" unique_id=1067290166]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Red/StaticBody3D" unique_id=142490311]
+shape = SubResource("SphereShape3D_fws1a")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Red/StaticBody3D" unique_id=646619755]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
 light_color = Color(1, 0, 0, 1)
-omni_range = 1.361
+omni_range = 0.412
+omni_attenuation = -0.067
 
-[node name="OmniLight3D2" type="OmniLight3D" parent="." unique_id=961573390]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3704266, 0, -0.3406431)
-light_color = Color(0, 0, 1, 1)
-omni_range = 1.361
+[node name="Green" parent="." unique_id=721555349 instance=ExtResource("6_xpysu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0)
 
-[node name="OmniLight3D3" type="OmniLight3D" parent="." unique_id=2089563020]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9647018, 0.10134578, 2.9372773)
+[node name="StaticBody3D" type="StaticBody3D" parent="Green" unique_id=570589997]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Green/StaticBody3D" unique_id=826349922]
+shape = SubResource("SphereShape3D_fws1a")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Green/StaticBody3D" unique_id=1820233202]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
 light_color = Color(0, 1, 0, 1)
-omni_range = 1.361
+omni_range = 0.412
+omni_attenuation = -0.067
 
-[node name="OmniLight3D4" type="OmniLight3D" parent="." unique_id=1715078478]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.910665, -2.3841858e-07, 3.4967327)
-light_color = Color(0, 1, 1, 1)
-omni_range = 1.361
-
-[node name="OmniLight3D5" type="OmniLight3D" parent="." unique_id=782638412]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.580451, 0, 0.1561315)
-light_color = Color(1, 0, 1, 1)
-omni_range = 1.361
-
-[node name="OmniLight3D6" type="OmniLight3D" parent="." unique_id=1371423868]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6704845, 0, -1.2353959)
-light_color = Color(1, 1, 0, 1)
-omni_range = 1.361
+[node name="Camera3D" type="Camera3D" parent="." unique_id=337301423]
+transform = Transform3D(-1, 8.742278e-08, 3.821371e-15, 0, -4.371139e-08, 1, 8.742278e-08, 1, 4.371139e-08, 0, 1, 0)
+current = true
+script = ExtResource("2_rlkm5")
