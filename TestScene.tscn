@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://dqnprgoxue3d7"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_pn5b2"]
+
+[sub_resource type="Sky" id="Sky_mncer"]
+sky_material = SubResource("ProceduralSkyMaterial_pn5b2")
+
+[sub_resource type="Environment" id="Environment_cguwc"]
+background_mode = 2
+sky = SubResource("Sky_mncer")
+tonemap_mode = 3
+tonemap_exposure = 2.36
+tonemap_agx_contrast = 1.49
+ssao_enabled = true
+glow_enabled = true
+glow_bloom = 1.0
+fog_density = 0.001
+fog_sky_affect = 0.165
+
+[sub_resource type="BoxMesh" id="BoxMesh_wicfy"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_go42g"]
+lightmap_size_hint = Vector2i(12, 12)
+add_uv2 = true
+
+[node name="Node3D" type="Node3D" unique_id=1591878142]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=705581944]
+environment = SubResource("Environment_cguwc")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="WorldEnvironment" unique_id=1932217599]
+mesh = SubResource("BoxMesh_wicfy")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="WorldEnvironment" unique_id=2052072014]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45338643, 0)
+mesh = SubResource("PlaneMesh_go42g")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=199247908]
+transform = Transform3D(-0.0698598, 0.89988196, 0.43050206, 0.65034246, -0.28615373, 0.70368385, 0.75642216, 0.32913297, -0.5652407, 2.4063735, 1.0138439, -2.5691571)
+light_bake_mode = 1
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1108495425]
+transform = Transform3D(0.47104594, -0.24533018, 0.84730685, 0, 0.960547, 0.27811787, -0.8821087, -0.13100629, 0.45246175, 2.9351501, 1.0518103, 1.722227)
