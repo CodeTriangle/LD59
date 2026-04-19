@@ -56,12 +56,10 @@ func create_game() -> void:
 
 		var draggable_light_config = self.light_configs[light_index]
 		var draggable_light_object: GenericLight = GENERIC_LIGHT.instantiate()
-		var dnd = DraggingObject3D.new()
-		dnd.transform.origin.x = dragx
-		dnd.transform.origin.z = dragz
-		draggable_lights_container.add_child(dnd)
-		dnd.add_child(draggable_light_object)
-		draggable_light_config.call(draggable_light_object)
+		draggable_light_object.transform.origin.x = dragx
+		draggable_light_object.transform.origin.z = dragz
+		self.get_parent().call_deferred("add_child", draggable_light_object)
+		draggable_light_object.ready.connect(draggable_light_config.bind(draggable_light_object))
 
 		var solution_light_config = self.light_configs[light_index]
 		var solution_light_object: GenericLight = GENERIC_LIGHT.instantiate()
